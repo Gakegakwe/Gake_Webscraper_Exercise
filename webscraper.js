@@ -1,4 +1,4 @@
-// TODO: write this file!
+// TODO: This Program is to scrape data off websites!
   import puppeteer from 'puppeteer';
   import got from 'got';
   import cheerio from 'cheerio';
