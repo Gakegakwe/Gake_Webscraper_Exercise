@@ -1,34 +1,33 @@
-// TODO: This Program is to scrape data off websites!
-  import puppeteer from 'puppeteer';
-  import got from 'got';
-  import cheerio from 'cheerio';
-  import { html } from 'cheerio/lib/api/manipulation.js';
+// TODO: This code is expected to scrape data from a website!
+import puppeteer from 'puppeteer';
+import got from 'got';
+import cheerio from 'cheerio';
+import { html } from 'cheerio/lib/api/manipulation';
 
-  
-  
-  const URL='https://www.geeksforgeeks.org/java/';
+const URL='https://openlibrary.org/';
 
-   async function scrapeHTML (URL){
+//Function for scraping an HTML page
+ async function scrapeHTML (URL){
+try{
+      
+   // Fetching HTML page code
+  const response = await got(URL);
+  const html = response.body;
+   console.log(html); 
+    }
+      
+    catch (error){
+      console.error(error)
+    } 
+    
+    };
+//calling the function
+ scrapeHTML(URL)
+
+//Function for scraping an LINKS from a page
+ async function scrapeLINKS (URL){
   try{
 
-     // Fetching HTML
-    const response = await got(URL);
-    const html = response.body;
-    // console.log(html); 
-      }
-        
-      catch (error){
-        console.error(error)
-      } 
-      
-      };
-//calling the function
-   scrapeHTML(URL)
-  
-
-   async function scrapeLINKS (URL){
-    try{
-  
 const results= await got(URL);
 const HTML=results.body;
 
@@ -39,24 +38,27 @@ const links=$('a');
 const linksArray=[];
 
 links.each((index, element) => {
-  linksArray.push({
-      text: $(element).text(), // get the text
-      href: $(element).attr('href'), // get the href attribute
-    
-  });
+linksArray.push({
+   // get the text
+    text: $(element).text(),
+   // get the href attribute
+    href: $(element).attr('href'),
+  
+});
 });
 console.log(linksArray);
-    }
-    catch (error){
-      console.error(error)
-    } 
-  };
+  }
+  catch (error){
+    console.error(error)
+  } 
+};
 
-  scrapeLINKS (URL);
+//calling the function
+scrapeLINKS (URL);
 
-  async function scrapeIMAGES (URL){
-    try{
-  
+async function scrapeIMAGES (URL){
+  try{
+
 const results= await got(URL);
 const HTML=results.body;
 
@@ -67,33 +69,51 @@ const image=$('img');
 const imageArray=[];
 
 image.each((index, element) => {
-  imageArray.push({
-     Image_href: $(element).attr('src'), // get the href attribute 
-    <img src="link "
-  });
+imageArray.push({
+  
+   // get the text
+    alt: $(element).alt(),
+   // get the href attribute
+    href: $(element).attr('src'),
+  
+});
 });
 console.log(imageArray);
-    }
-    catch (error){
-      console.error(error)
-    } 
-  };
+  }
+  catch (error){
+    console.error(error)
+  } 
+};
+//calling the function
+scrapeIMAGES(URL);
 
-  scrapeIMAGES(URL);
+//function for scraping the input in the address bar
+async function scrapeINPUT(URL){
+  try{
 
-  async function scrapeINPUT() {
-try{
-  const $= cheerio.load();
+const results= await got(URL);
+const HTML=results.body;
 
-    const HTML = Request.URL;  //reques url from user if not provided
+//load HTML page saved
+const $= cheerio.load(HTML);
 
-    console.log.info('Input Scraped',`URL: ${context.request.URL}`);
+const links=$('a');
+const linksArray=[];
 
-    console.log(HTML);
-}
-catch(error){
-console.error();
-}
-    };
+links.each((index, element) => {
+linksArray.push({
+  // get the text
+    text: $(element).text(), 
+  // get the href attribute
+    href: $(element).attr('href'), 
+  
+});
+});
+console.log(linksArray);
+  }
+  catch (error){
+    console.error(error)
+  } 
+};
 
-    scrapeINPUT();
+scrapeLINKS (URL);
