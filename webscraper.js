@@ -5,7 +5,7 @@ import cheerio from "cheerio";
 import PromptSync from "prompt-sync";
 
 const prompt = PromptSync();
-const URL = prompt("enter the website you want to scrape: ");
+const URL = prompt("Enter the website you want to scrape: ");
 const results = await got(URL);
 const HTML = results.body;
 
