@@ -1,99 +1,109 @@
-// TODO: This Program is to scrape data off websites!
-  import puppeteer from 'puppeteer';
-  import got from 'got';
-  import cheerio from 'cheerio';
-  import { html } from 'cheerio/lib/api/manipulation.js';
+// TODO: This code is expected to scrape data from a website!
+import puppeteer from "puppeteer";
+import got from "got";
+import cheerio from "cheerio";
+import PromptSync from "prompt-sync";
 
-  
-  
-  const URL='https://www.geeksforgeeks.org/java/';
+const prompt = PromptSync();
+const URL = prompt("Enter the website you want to scrape: ");
+const results = await got(URL);
+const HTML = results.body;
 
-   async function scrapeHTML (URL){
-  try{
+const $ = cheerio.load(HTML);
 
-     // Fetching HTML
+/**
+ * Scrapes an HTML page
+ * Importing the got module.
+ * Defining a function that takes a URL as an argument.
+ * Using the got module to fetch the HTML page code.
+ * Returning the HTML page code.
+ */
+
+async function scrapeHTML(URL) {
+  try {
+    // Fetching HTML page code
     const response = await got(URL);
     const html = response.body;
-    // console.log(html); 
-      }
-        
-      catch (error){
-        console.error(error)
-      } 
-      
-      };
-//calling the function
-   scrapeHTML(URL)
-  
+    console.log(html);
+  } catch (error) {
+    console.error(error);
+  }
+}
+scrapeHTML(URL);
 
-   async function scrapeLINKS (URL){
-    try{
-  
-const results= await got(URL);
-const HTML=results.body;
+/**
+ * Scrapes LINKS from a page
+ * First, we’re using the $() function to select all the anchor tags on the page.
+ * Next, we’re using the each() function to loop through each of the anchor tags.
+ * We’re using the push() function to push each of the anchor tags into an array.
+ * Finally, we’re logging the array to the console.
+ */
 
-//load HTML page saved
-const $= cheerio.load(HTML);
+async function scrapeLINKS() {
+  try {
+    const links = $("a");
+    const linksArray = [];
 
-const links=$('a');
-const linksArray=[];
+    links.each((index, element) => {
+      linksArray.push({
+        text: $(element).text(),
+        href: $(element).attr("href"),
+      });
+    });
+    console.log(linksArray);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-links.each((index, element) => {
-  linksArray.push({
-      text: $(element).text(), // get the text
-      href: $(element).attr('href'), // get the href attribute
-    
-  });
-});
-console.log(linksArray);
-    }
-    catch (error){
-      console.error(error)
-    } 
-  };
+scrapeLINKS();
 
-  scrapeLINKS (URL);
+/**
+ * Scrapes an images links from HTML page
+ * get the href and text attribute of image links
+ * await keyword to wait for the promise to resolve.
+ * try/catch block to catch any errors that might occur.
+ * $() function to select all the images on the page.
+ * using the each() function to loop through each image and extract the alt and src attributes.
+ * We’re pushing each object to an array.
+ * Finally, we’re logging the array to the console.
+ */
 
-  async function scrapeIMAGES (URL){
-    try{
-  
-const results= await got(URL);
-const HTML=results.body;
+async function scrapeIMAGES() {
+  try {
+    const image = $("img");
+    const imageArray = [];
 
-//load HTML page saved
-const $= cheerio.load(HTML);
+    image.each((index, element) => {
+      imageArray.push({
+        alt: $(element).alt(),
+        href: $(element).attr("src"),
+      });
+    });
+    console.log(imageArray);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-const image=$('img');
-const imageArray=[];
+scrapeIMAGES();
 
-image.each((index, element) => {
-  imageArray.push({
-     Image_href: $(element).attr('src'), // get the href attribute 
-    <img src="link "
-  });
-});
-console.log(imageArray);
-    }
-    catch (error){
-      console.error(error)
-    } 
-  };
+/**
+ * Scrapes an input in the address bar
+ * Creating a try and catch block to catch any errors.
+ * Creating a const called HTML and assigning it the URL from the user.
+ * Logging the URL to the console.
+ */
 
-  scrapeIMAGES(URL);
+async function scrapeINPUT() {
+  try {
+    const HTML = Request.URL;
 
-  async function scrapeINPUT() {
-try{
-  const $= cheerio.load();
-
-    const HTML = Request.URL;  //reques url from user if not provided
-
-    console.log.info('Input Scraped',`URL: ${context.request.URL}`);
-
+    console.log.info("Input Scraped", `URL: ${context.request.URL}`);
     console.log(HTML);
+  } catch (error) {
+    console.error(error);
+  }
 }
-catch(error){
-console.error();
-}
-    };
 
-    scrapeINPUT();
+scrapeINPUT();
